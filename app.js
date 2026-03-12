@@ -22,15 +22,21 @@ app.use("/dynamic", function(request, response){
 
     let arr = [a, b, c];
 
-    for (i = 0; i < arr.length; ++i)
-    {
-        if (arr[i] == undefined || !Number(arr[i]))
-        {
-            response.json({header: "Error"}); break;
-        } else continue;
+     for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === undefined || arr[i] === null || arr[i] === '') {
+            return response.json({ header: "Error"});
+        }
+        
+        const num = Number(arr[i]);
+
+        if (isNaN(num)) {
+            return response.json({ header: "Error"});
+        }
+
+        arr[i] = num;
     }
 
-    const s = +a + +b + +c;
+    const s = arr[0] + arr[1] + arr[2];
     response.json({header: "Calculated", 
         body: s});
 });
